@@ -1,17 +1,17 @@
 <template>
-  <div id="contractor">
+  <div registrated_id="contractor">
     <h1>Контрагенты</h1>
     <br/>
     <div>
       <table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">id</th>
+          <th scope="col">registrated_id</th>
           <th scope="col">Contractor Name</th>
           <th scope="col">Contact Information (place,location,phone...)</th>
         </tr>
         </thead>
-        <tbody id="allContractors">
+        <tbody registrated_id="allContractors">
         <tr v-for="(value, index) in contractors" v-on:click="choseContractor($event,value.contractor_id)">
           <td>{{value.contractor_id}}</td>
           <td>{{value.name}}</td>
@@ -34,12 +34,12 @@
       <table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">id</th>
+          <th scope="col">registrated_id</th>
           <th scope="col">Game Name</th>
           <th scope="col">Max Players</th>
         </tr>
         </thead>
-        <tbody id="allGames">
+        <tbody registrated_id="allGames">
         <tr v-for="(value, index) in games" v-on:click="choseGame($event,value.contractor_games_id,value.game_name)">
           <td>{{value.contractor_games_id}}</td>
           <td>{{value.game_name}}</td>

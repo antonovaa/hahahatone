@@ -1,15 +1,15 @@
 <template>
-  <div id="games">
+  <div registrated_id="games">
     <h1>Игры</h1>
     <br/>
     <table class="table table-dark">
       <thead>
       <tr>
-        <th scope="col">id</th>
+        <th scope="col">registrated_id</th>
         <th scope="col">Game Name</th>
       </tr>
       </thead>
-      <tbody id="game">
+      <tbody registrated_id="game">
       <tr v-for="(value, index) in games" v-on:click="choseGame($event,value.games_id)">
         <td>{{value.games_id}}</td>
         <td>{{value.game_name}}</td>

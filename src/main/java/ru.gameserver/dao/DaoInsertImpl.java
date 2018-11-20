@@ -4,8 +4,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.gameserver.model.CrashInfoModel;
 import ru.gameserver.model.GameInfoModel;
-import ru.gameserver.model.GameReportLog;
-import ru.gameserver.model.SingleCrashModel;
 
 import javax.sql.DataSource;
 import java.sql.*;

@@ -1,9 +1,5 @@
 package ru.gameserver.dao;
 
-import ru.gameserver.model.Gkey;
-import ru.gameserver.model.ResponseGame;
-import ru.gameserver.model.SingleGkey;
-
 import java.util.List;
 import java.util.Map;
 

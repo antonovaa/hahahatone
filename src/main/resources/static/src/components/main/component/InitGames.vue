@@ -1,5 +1,5 @@
 <template>
-  <div id="initGames">
+  <div registrated_id="initGames">
     <h1>Инициализированные игры контрагентов</h1>
     <br/>
     <select v-model="contractorId">
@@ -11,7 +11,7 @@
     <table class="table table-dark">
       <thead>
       <tr>
-        <th scope="col">id</th>
+        <th scope="col">registrated_id</th>
         <th scope="col">Key Game</th>
         <th scope="col">Info Game(place or other info)</th>
         <th scope="col">Mac address</th>
@@ -23,7 +23,7 @@
       </thead>
       <tbody>
       <tr v-for="(value, index) in infoAll">
-        <td>{{value.id}}</td>
+        <td>{{value.registrated_id}}</td>
         <td>{{value.key_game}}</td>
         <td>{{value.place_game}}</td>
         <td>{{value.mac_address}}</td>
@@ -31,7 +31,7 @@
         <td>{{value.contragent_name}}</td>
         <td>{{value.isallowed}}</td>
         <td>
-          <button v-show="value.key_game!=='KeyGeneratedForOnceContractor'" v-on:click="changeResolution(value.id)"><p v-if="value.isallowed">Заблокировать</p>
+          <button v-show="value.key_game!=='KeyGeneratedForOnceContractor'" v-on:click="changeResolution(value.registrated_id)"><p v-if="value.isallowed">Заблокировать</p>
             <p v-else>Разблокировать</p></button>
         </td>
       </tr>

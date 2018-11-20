@@ -1,5 +1,5 @@
 <template>
-  <div id="header">
+  <div registrated_id="header">
 
     <nav class="navbar navbar-inverse bg-inverse">
       <div class="container-fluid">

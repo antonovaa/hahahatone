@@ -1,5 +1,5 @@
 <template>
-  <div id="general">
+  <div registrated_id="general">
     <component v-bind:is="this.currentView" :number="cvn" >    </component>
 
   </div>

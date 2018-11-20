@@ -1,5 +1,5 @@
 <template>
-  <div id="gameLog">
+  <div registrated_id="gameLog">
     <h1>{{game}}</h1>
     <button v-on:click="Change(0)" class="btn">Log played games</button>
     <button v-on:click="Change(1)" class="btn">Log crashed games</button>
@@ -14,15 +14,15 @@
         {{ option.game_name }}
       </option>
     </select>
-    дата начала игры <input id="date_begin" type="date" v-model="dateSearchBegin">
-    дата конца игры <input id="date_end" type="date" v-model="dateSearchEnd">
+    дата начала игры <input registrated_id="date_begin" type="date" v-model="dateSearchBegin">
+    дата конца игры <input registrated_id="date_end" type="date" v-model="dateSearchEnd">
     <button class="btn" v-on:click="DoFilter()">Отфильтровать</button>
     <div v-if="show_log">
       <p>Количество Игр: {{countGames}}, количество игроков в играх {{countPlayers}}</p>
       <div style="height: 700px; overflow-y: scroll;"><table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">id</th>
+          <th scope="col">registrated_id</th>
           <th scope="col">Game Name</th>
           <th scope="col">Mac Address</th>
           <th scope="col">Game start</th>
@@ -58,7 +58,7 @@
       <table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">id</th>
+          <th scope="col">registrated_id</th>
           <th scope="col">Game start</th>
           <th scope="col">Game Name</th>
           <th scope="col">Player IP</th>
@@ -94,7 +94,7 @@
     </div>
 
 
-    <div id="myModal" class="modal">
+    <div registrated_id="myModal" class="modal">
 
       <!-- Modal content -->
       <div class="modal-content">

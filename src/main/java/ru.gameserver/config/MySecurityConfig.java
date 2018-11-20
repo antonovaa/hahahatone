@@ -18,7 +18,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/js/**", "/css/**", "/dist/**","/init","/saveGameInfoList/**","/CheckAvailable/**","/saveCrashInfo/**","/init/**","/singleInit","/singleCrash","/singleLog")
+                .antMatchers( "/js/**", "/css/**", "/dist/**","/saveCrashInfo/**","/saveGameInfoList/**","/registration/**","/authorization/**","/update")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -34,8 +34,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
-                        .username("Narratex")
-                        .password("SecurityNarratex12345")
+                        .username("Arena")
+                        .password("SecurityArena12345")
                         .roles("ADMIN")
                         .build();
 

@@ -44,10 +44,10 @@ comment on column arena_info.log_crash_game.game_start
 is 'время начала игры';
 
 comment on column arena_info.log_crash_game.player_ip
-is 'id Player';
+is 'registrated_id Player';
 
 comment on column arena_info.log_crash_game.server_ip
-is 'id Server';
+is 'registrated_id Server';
 
 comment on column arena_info.log_crash_game.log_sever
 is 'log server';
@@ -91,5 +91,5 @@ comment on column arena_info.log_run_game.player_count
 is 'количество игроков';
 
 comment on column arena_info.log_run_game.server_ip
-is 'id сервера с игрой';
+is 'registrated_id сервера с игрой';
 --------------------------------------------------------------
