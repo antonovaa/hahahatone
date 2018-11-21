@@ -1,21 +1,18 @@
 <template>
-  <div registrated_id="header">
+  <div id="header">
 
     <nav class="navbar navbar-inverse bg-inverse">
       <div class="container-fluid">
         <div>
           <form class="form-inline">
             <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(1)" type="button">
-              Contractors
+              Games
             </button>
             <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(2)" type="button">
-              Games
+              Gamers
             </button>
             <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(3)" type="button">
               Game Log
-            </button>
-            <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(4)" type="button">
-              Init Games
             </button>
           </form>
         </div>
@@ -68,7 +65,7 @@
   }
   #header {
     height: 100px;
-    background-image: url("https://static.wixstatic.com/media/4fad7a_09139bf1f6204fd39caca0b57c615798~mv2.jpg/v1/crop/x_0,y_200,w_1920,h_822/fill/w_980,h_354,al_c,q_80,usm_0.66_1.00_0.01/4fad7a_09139bf1f6204fd39caca0b57c615798~mv2.webp");
+    background-image: url("https://c.wallhere.com/photos/f3/02/4020x1675_px_apocalyptic_zombies-1201928.jpg!d");
   }
 
 

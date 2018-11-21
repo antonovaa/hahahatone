@@ -49,9 +49,9 @@ public class WebShowInfoImpl implements WebShowInfo {
     }
 
     @Override
-    public List<Map<String, Object>> getContractors() {
+    public List<Map<String, Object>> getGamersGame(int gamesId) {
         try {
-            return jdbcTemplate.queryForList("select * from arena_info.contractor c");
+            return jdbcTemplate.queryForList("select * from arena_info.get_gamers_game(" + gamesId + ")");
         } catch (Exception e) {
             return null;
         }
@@ -60,27 +60,10 @@ public class WebShowInfoImpl implements WebShowInfo {
     @Override
     public List<Map<String, Object>> getGames() {
         try {
-            return jdbcTemplate.queryForList("select g.games_id,g.game_name,g.max_players from arena_info.games g");
+            return jdbcTemplate.queryForList("select g.games_id,g.game_name from arena_info.games g");
         } catch (Exception e) {
             return null;
         }
     }
 
-    @Override
-    public List<Map<String, Object>> showContractorGames(int contractorId) {
-        try {
-            return jdbcTemplate.queryForList("select * from arena_info.get_contractor_games(" + contractorId + ")");
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
-    public List<Map<String, Object>> showInitGames(int contractorId) {
-        try {
-            return jdbcTemplate.queryForList("select * from arena_info.get_init_contractor_game(?)",contractorId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }

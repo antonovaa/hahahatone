@@ -20,36 +20,13 @@ public class WebAddController {
 
     @RequestMapping(value = "/addGame")
     @ResponseBody
-    public String addGame(@RequestParam("gameName") String gameName,@RequestParam("maxPlayers") int maxPlayers) {
+    public String addGame(@RequestParam("gameName") String gameName) {
 
-        if (webSaveInfo.addGame(gameName,maxPlayers)) {
+        if (webSaveInfo.addGame(gameName)) {
             return "success";
         } else {
             return "error";
         }
     }
 
-    @RequestMapping(value = "/addContractor")
-    @ResponseBody
-    public String addContractor(@RequestParam("contractorName") String contractorName,
-                                @RequestParam("contractorPlace") String contractorPlace) {
-
-        if (webSaveInfo.addContractor(contractorName,contractorPlace)) {
-            return "success";
-        } else {
-            return "error";
-        }
-    }
-
-    @RequestMapping(value = "/addContractorGames")
-    @ResponseBody
-    public String addContractorGames(@RequestParam("contractor_id") int contractorId,
-                                @RequestParam("games_id") int gameId) {
-
-        if (webSaveInfo.addContractorGames(contractorId,gameId)) {
-            return "success";
-        } else {
-            return "error";
-        }
-    }
 }

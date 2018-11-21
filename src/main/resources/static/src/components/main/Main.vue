@@ -1,5 +1,5 @@
 <template>
-  <div registrated_id="general">
+  <div id="general">
     <component v-bind:is="this.currentView" :number="cvn" >    </component>
 
   </div>
@@ -8,9 +8,8 @@
 <script>
 
   import GameLog from './component/GameLog.vue'
-  import Contractors from './component/Contractors.vue'
+  import Gamers from './component/Gamers.vue'
   import Games from './component/Games.vue'
-  import InitGames from './component/InitGames.vue'
 
 
   export default {
@@ -22,17 +21,15 @@
     },
     components:{
       'game-log':GameLog,
-      'contractors':Contractors,
+      'gamers':Gamers,
       'games':Games,
-      'init-games':InitGames
     },
     computed:{
       currentView:function() {
         this.cvn=this.$store.state.currentViewNumber;
-        if (this.cvn === 1) {return 'contractors';}
-        if (this.cvn === 2) {return 'games';}
+        if (this.cvn === 1) {return 'games';}
+        if (this.cvn === 2) {return 'gamers';}
         if (this.cvn === 3) {return 'game-log';}
-        if (this.cvn === 4) {return 'init-games';}
       }
     }
   }

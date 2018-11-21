@@ -15,9 +15,6 @@ public interface ContractorGame {
     public List<Map<String, Object>> getAllMd5Keys(String key_game);
 
 
-    public ResponseGame InitSaveGkey(Gkey gkey);
-    public int InitSingleGameGkey(SingleGkey singleGkey);
-
     public String getKeyToday(int contractor_games_id);
     public String getHash(String str);
 

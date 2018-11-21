@@ -1,28 +1,23 @@
 <template>
-  <div registrated_id="gameLog">
+  <div id="gameLog">
     <h1>{{game}}</h1>
     <button v-on:click="Change(0)" class="btn">Log played games</button>
     <button v-on:click="Change(1)" class="btn">Log crashed games</button>
     <br/>
-    <select v-model="selectedContractor">
-      <option v-for="option in optionsContractors" v-bind:value="option.contractor_id">
-        {{ option.name }}
-      </option>
-    </select>
     <select v-model="selectedGame">
       <option v-for="option in optionsGames" v-bind:value="option.games_id">
         {{ option.game_name }}
       </option>
     </select>
-    дата начала игры <input registrated_id="date_begin" type="date" v-model="dateSearchBegin">
-    дата конца игры <input registrated_id="date_end" type="date" v-model="dateSearchEnd">
+    дата начала игры <input id="date_begin" type="date" v-model="dateSearchBegin">
+    дата конца игры <input id="date_end" type="date" v-model="dateSearchEnd">
     <button class="btn" v-on:click="DoFilter()">Отфильтровать</button>
     <div v-if="show_log">
       <p>Количество Игр: {{countGames}}, количество игроков в играх {{countPlayers}}</p>
       <div style="height: 700px; overflow-y: scroll;"><table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">registrated_id</th>
+          <th scope="col">id</th>
           <th scope="col">Game Name</th>
           <th scope="col">Mac Address</th>
           <th scope="col">Game start</th>
@@ -58,7 +53,7 @@
       <table class="table table-dark">
         <thead>
         <tr>
-          <th scope="col">registrated_id</th>
+          <th scope="col">id</th>
           <th scope="col">Game start</th>
           <th scope="col">Game Name</th>
           <th scope="col">Player IP</th>
@@ -94,7 +89,7 @@
     </div>
 
 
-    <div registrated_id="myModal" class="modal">
+    <div id="myModal" class="modal">
 
       <!-- Modal content -->
       <div class="modal-content">
@@ -126,8 +121,7 @@
         contractorName: '',
         selectedGame: 0,
         optionsGames: [],
-        selectedContractor: 0,
-        optionsContractors: [],
+        optionsGames: [],
         countGames:0,
         countPlayers:0
       }
@@ -178,10 +172,10 @@
       },
       DoFilter: function () {
         if (this.show_log) {
-          this.getTable("showLogList", this.temp, this.dateSearchBegin, this.dateSearchEnd, this.selectedGame, this.selectedContractor);
+          this.getTable("showLogList", this.temp, this.dateSearchBegin, this.dateSearchEnd, this.selectedGame, 0);
         }
         else {
-          this.getTable("showCrashList", this.temp, this.dateSearchBegin, this.dateSearchEnd, this.selectedGame, this.selectedContractor);
+          this.getTable("showCrashList", this.temp, this.dateSearchBegin, this.dateSearchEnd, this.selectedGame, 0);
         }
       },
       Change: function (a) {

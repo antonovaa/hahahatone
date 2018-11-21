@@ -27,25 +27,4 @@ public class WebDeleteController {
             return null;
         }
     }
-
-    @RequestMapping(value = "/deleteContractor")
-    @ResponseBody
-    public String deleteContractor(@RequestParam(value = "contractor_id") int contractor_id){
-        try {
-            return webDelete.deleteContractor(contractor_id)?"success":"error";
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/deleteContractorGames")
-    @ResponseBody
-    public String deleteContractorGames(@RequestParam(value = "contractor_games_id") int contractor_games_id){
-        try {
-            return webDelete.deleteContractorGames(contractor_games_id)?"success":"error";
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 }

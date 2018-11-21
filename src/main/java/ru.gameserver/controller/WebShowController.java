@@ -62,30 +62,10 @@ public class WebShowController {
         }
     }
 
-    @RequestMapping(value = "/getContractorGames")    @ResponseBody
-    public List<Map<String, Object>>  getContractorGames(@RequestParam int contractor_id) {
+    @RequestMapping(value = "/getGamersGame")    @ResponseBody
+    public List<Map<String, Object>> getGamersGame(@RequestParam(value = "gamesId") int gamesId) {
         try {
-            return webShowInfo.showContractorGames(contractor_id);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/getContractors")
-    @ResponseBody
-    public List<Map<String, Object>> getContractors() {
-        try {
-            return webShowInfo.getContractors();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/getInitContractorGame")
-    @ResponseBody
-    public List<Map<String, Object>> getInitContractorGame(@RequestParam int contractorId) {
-        try {
-            return webShowInfo.showInitGames(contractorId);
+            return webShowInfo.getGamersGame(gamesId);
         } catch (Exception e) {
             return null;
         }

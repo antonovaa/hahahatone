@@ -31,12 +31,11 @@ public class LogController {
 
 
 
-    @RequestMapping("/registration/{name}")
+    @RequestMapping("/registration")
     @ResponseBody
-    public int registration(@RequestBody String registration,
-                                                 @PathVariable("name") String name) {
+    public int registration(@RequestBody String registration) {
 
-        return daoinsert.registration(new Gson().fromJson(registration, Registration.class),name);
+        return daoinsert.registration(new Gson().fromJson(registration, Registration.class));
     }
 
 

@@ -31,7 +31,7 @@ end;
 $func$
 LANGUAGE 'plpgsql';
 
-create or replace function arena_info.authorization_gamer(p_login text, p_password text)
+create or replace function arena_info.authorization_gamer(p_login text, p_password text,p_game text)
   returns table(
   registrated_id integer,
   info text
@@ -43,7 +43,8 @@ begin
   r.registrated_id,
   r.info
   from arena_info.registrated r
-  where r.login=p_login and r.password=p_password;
+  join arena_info.games g on r.games_id = g.games_id
+  where r.login=p_login and r.password=p_password and g.game_name=p_game;
 end;
 $func$
 LANGUAGE 'plpgsql';

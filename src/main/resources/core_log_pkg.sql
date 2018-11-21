@@ -48,8 +48,7 @@ LANGUAGE plpgsql;
 
 --------------------------------------------------------------
 
-create or replace function arena_info.get_log_game(p_name          text, p_date_begin text, p_date_end text,
-                                                  p_contractor_id int, p_game_id int)
+create or replace function arena_info.get_log_game(p_name          text, p_date_begin text, p_date_end text,                                             p_game_id int)
   returns table(
     mac_addr     text,
     game_name    text,

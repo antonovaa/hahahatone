@@ -2,12 +2,15 @@ package ru.gameserver.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.gameserver.model.Authorization;
+import ru.gameserver.model.AuthorizationRequest;
 import ru.gameserver.model.CrashInfoModel;
 import ru.gameserver.model.GameInfoModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import ru.gameserver.model.Registration;
 
 @Repository
 public class DaoInsertImpl implements Daoinsert {
@@ -98,6 +101,7 @@ public class DaoInsertImpl implements Daoinsert {
     }
 
 
+
     @Override
     public boolean saveCrashInfo(List<CrashInfoModel> crashInfoList, String name, String macAddr) {
 
@@ -143,76 +147,46 @@ public class DaoInsertImpl implements Daoinsert {
         }
     }
 
+
+
     @Override
-    public boolean saveSingleGameCrash(SingleCrashModel singleCrashModel) {
+    public int registration(Registration registration, String gameName) {
 
-            String timeStamp=singleCrashModel.getGameStart().split("-")[0].replace('.','-')+" "+singleCrashModel.getGameStart().split("-")[1].replace('.',':');
-            String sql="insert into arena_info.log_crash_game (game_start,game_name,mac_addr,log_sever) values (?,?,?,?)";
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement preparedStatement = con.prepareStatement(sql)) {
 
-                preparedStatement.setTimestamp(1, Timestamp.valueOf(timeStamp));
-                preparedStatement.setString(2, singleCrashModel.getGameName());
-                preparedStatement.setString(3, singleCrashModel.getMacAddress());
-                preparedStatement.setString(4, singleCrashModel.getCrashLog());
-                preparedStatement.execute();
+        try{
+            String sql="select arena_info.registration_gamer(?,?,?,?)";
+            return jdbcTemplate.queryForList(sql,new Object[]{registration.getLogin(),registration.getPassword(),registration.getEmail(), gameName}, Integer.class).get(0);
 
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
+        }
+        catch (Exception e){
 
+            return -1;
+        }
 
     }
 
+    @Override
+    public AuthorizationRequest authorization(Authorization authorization, String gameName) {
+        try{
+            String sql="select arena_info.authorization_gamer(?,?,?)";
+            return jdbcTemplate.queryForList(sql,new Object[]{authorization.getLogin(),authorization.getPassword(), gameName}, AuthorizationRequest.class).get(0);
+        }
+        catch (Exception e){
+
+            return new AuthorizationRequest(-1,"");
+        }
+    }
 
     @Override
-    public String saveLogGame(GameReportLog gameReportLog) {
-        String result;
-        int l = gameReportLog.getLog().size();
-        String[] dateStartArr = new String[l];
-        String[] dateEndArr = new String[l];
-        try {
-            for (int i = 0; i < gameReportLog.getLog().size(); i++) {
-                dateStartArr[i] = gameReportLog.getLog().get(i).substring(0, 19);
-                if (gameReportLog.getLog().get(i).contains("Finish")) {
-                    dateEndArr[i] = "Finish " + gameReportLog.getLog().get(i).substring(28, 47);
-                } else if (gameReportLog.getLog().get(i).contains("Reset")) {
-                    dateEndArr[i] = "Reset " + gameReportLog.getLog().get(i).substring(28, 47);
-                } else if (gameReportLog.getLog().get(i).contains("ResetOnTheLastMap")) {
-                    dateEndArr[i] = "ResetOnTheLastMap " + gameReportLog.getLog().get(i).substring(28, 47);
-                } else {
-                    dateEndArr[i] = "restart PC or error";
-                }
-            }
-        } catch (Exception e) {
-            return "other problems";
+    public int update(AuthorizationRequest authorizationRequest) {
+        try{
+            String sql="select arena_info.update_gamer(?,?)";
+            jdbcTemplate.queryForList(sql,new Object[]{authorizationRequest.getRegistrated_id(),authorizationRequest.getInfo()}, Integer.class);
+            return 0;
         }
+        catch (Exception e){
 
-        String callSQL = "select arena_info.insert_array_log_play_games(?,?,?,?);";
-        try (Connection con = dataSource.getConnection();
-
-             PreparedStatement preparedStatement = con.prepareStatement(callSQL)) {
-
-            Array ar1 = con.createArrayOf("text", dateStartArr);
-            Array ar2 = con.createArrayOf("text", dateEndArr);
-
-            preparedStatement.setArray(1, ar1);
-            preparedStatement.setArray(2, ar2);
-            preparedStatement.setString(3, gameReportLog.getMacAddress());
-            preparedStatement.setString(4, gameReportLog.getGameName());
-            preparedStatement.execute();
-
-            result = "success get file to backend";
-
-            if (!jdbcTemplate.queryForList("select arena_info.is_allowed_this_pc_contractor_game(?,?)", new Object[]{gameReportLog.getMacAddress(), gameReportLog.getGameName()}, Boolean.class).get(0)) {
-                result="success get file to backend and block";
-            }
-            return result;
-
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-            return "error save log";
+            return -1;
         }
     }
 }

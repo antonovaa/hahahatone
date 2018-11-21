@@ -1,27 +1,25 @@
 <template>
-  <div registrated_id="games">
+  <div id="games">
     <h1>Игры</h1>
     <br/>
     <table class="table table-dark">
       <thead>
       <tr>
-        <th scope="col">registrated_id</th>
+        <th scope="col">id</th>
         <th scope="col">Game Name</th>
       </tr>
       </thead>
-      <tbody registrated_id="game">
+      <tbody id="game">
       <tr v-for="(value, index) in games" v-on:click="choseGame($event,value.games_id)">
         <td>{{value.games_id}}</td>
         <td>{{value.game_name}}</td>
-        <td>{{value.max_players}}</td>
       </tr>
       </tbody>
     </table>
     <div>
-      <button class="btn btn-danger" v-if="games_id!==0" v-on:click="deleteGame()">Удалить Игру Контрагента</button>
+      <button class="btn btn-danger" v-if="games_id!==0" v-on:click="deleteGame()">Удалить Игру</button>
       <div>
         <input v-model="game"/>
-        <input v-model="max_players" number/>
         <button class="btn btn-info" v-show="game" v-on:click="addGame()">Добавить Игру</button>
       </div>
     </div>
@@ -57,7 +55,7 @@
 
       },
       addGame:function () {
-          axios.get('/addGame?gameName='+this.game+'&maxPlayers='+this.max_players, {
+          axios.get('/addGame?gameName='+this.game, {
             headers: {
               'Content-Type': 'application/json;charset=UTF-8'
             }
@@ -96,7 +94,6 @@
           .catch((req) => {
             console.log("error loaded "+req)
           });
-        this.getContractors();
       },
     }
   }

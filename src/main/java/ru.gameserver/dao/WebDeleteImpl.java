@@ -17,34 +17,11 @@ public class WebDeleteImpl implements WebDelete {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
-    public boolean deleteContractor(int contractor_id) {
-        try {
-            String sql = "select arena_info.delete_contractor("+contractor_id+")";
-            jdbcTemplate.execute(sql);
-            return true;
-        }
-        catch (Exception e){
-            return  false;
-        }
-    }
 
     @Override
     public boolean deleteGames(int games_id) {
         try {
             String sql = "select arena_info.delete_games("+games_id+")";
-            jdbcTemplate.execute(sql);
-            return true;
-        }
-        catch (Exception e){
-            return  false;
-        }
-    }
-
-    @Override
-    public boolean deleteContractorGames(int contractor_games_id) {
-        try {
-            String sql = "select arena_info.delete_contractor_games("+contractor_games_id+")";
             jdbcTemplate.execute(sql);
             return true;
         }
