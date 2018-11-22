@@ -7,6 +7,7 @@ public class Registration {
     private String email;
     private String gameName;
 
+
     public Registration(String login, String password, String email) {
         this.login = login;
         this.password = password;

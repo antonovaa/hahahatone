@@ -39,12 +39,11 @@ public class LogController {
     }
 
 
-    @RequestMapping("/authorization/{name}")
+    @RequestMapping("/authorization")
     @ResponseBody
-    public AuthorizationRequest authorization(@RequestBody String authorization,
-                                                 @PathVariable("name") String name) {
+    public AuthorizationRequest authorization(@RequestBody String authorization) {
 
-        return daoinsert.authorization(new Gson().fromJson(authorization, Authorization.class),name);
+        return daoinsert.authorization(new Gson().fromJson(authorization, Authorization.class));
     }
 
 

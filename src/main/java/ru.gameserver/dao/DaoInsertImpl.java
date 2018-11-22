@@ -27,7 +27,7 @@ public class DaoInsertImpl implements Daoinsert {
     @Override
     public int saveGameInfo(List<GameInfoModel> v, String name, String macAddr) {
 
-        int result=0;
+        int result = 0;
         int l = v.size();
         String[] gameStart = new String[l];
         String[] gameEnd = new String[l];
@@ -50,7 +50,7 @@ public class DaoInsertImpl implements Daoinsert {
 
         String callSQL = "select arena_info.insert_array_info_macAddres(?,?,?,?,?,?,?,?);";
         try (Connection con = dataSource.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement(callSQL)) {
+            PreparedStatement preparedStatement = con.prepareStatement(callSQL)) {
 
             Array ar1 = con.createArrayOf("text", gameStart);
             Array ar2 = con.createArrayOf("text", gameEnd);
@@ -73,12 +73,12 @@ public class DaoInsertImpl implements Daoinsert {
 
             try {
 
-
-                if (!jdbcTemplate.queryForList("select arena_info.is_allowed_this_pc_contractor_game(?,?)", new Object[]{macAddr, name}, Boolean.class).get(0)) {
+                if (!jdbcTemplate
+                    .queryForList("select arena_info.is_allowed_this_pc_contractor_game(?,?)",
+                        new Object[]{macAddr, name}, Boolean.class).get(0)) {
                     result = 1;
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
 
             }
             return result;
@@ -88,18 +88,18 @@ public class DaoInsertImpl implements Daoinsert {
         }
     }
 
-    public int CheckAvailable(String name,String macAddr){
+    public int CheckAvailable(String name, String macAddr) {
         try {
-            if (!jdbcTemplate.queryForList("select arena_info.is_allowed_this_pc_contractor_game(?,?)", new Object[]{macAddr, name}, Boolean.class).get(0)) {
+            if (!jdbcTemplate
+                .queryForList("select arena_info.is_allowed_this_pc_contractor_game(?,?)",
+                    new Object[]{macAddr, name}, Boolean.class).get(0)) {
                 return 1;
             }
             return 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return 1;
         }
     }
-
 
 
     @Override
@@ -123,7 +123,8 @@ public class DaoInsertImpl implements Daoinsert {
         }
 
         try (Connection con = dataSource.getConnection();
-             PreparedStatement preparedStatement = con.prepareStatement("select arena_info.insert_array_crash_info_macaddres(?,?,?,?,?,?,?)")) {
+            PreparedStatement preparedStatement = con.prepareStatement(
+                "select arena_info.insert_array_crash_info_macaddres(?,?,?,?,?,?,?)")) {
 
             Array arPlayerIds = con.createArrayOf("text", playerIps);
             Array arServerIds = con.createArrayOf("text", serverIps);
@@ -148,17 +149,16 @@ public class DaoInsertImpl implements Daoinsert {
     }
 
 
-
     @Override
-    public int registration(Registration registration, String gameName) {
+    public int registration(Registration registration) {
 
+        try {
+            String sql = "select arena_info.registration_gamer(?,?,?,?)";
+            return jdbcTemplate.queryForList(sql,
+                new Object[]{registration.getLogin(), registration.getPassword(),
+                    registration.getEmail(), registration.getGameName()}, Integer.class).get(0);
 
-        try{
-            String sql="select arena_info.registration_gamer(?,?,?,?)";
-            return jdbcTemplate.queryForList(sql,new Object[]{registration.getLogin(),registration.getPassword(),registration.getEmail(), gameName}, Integer.class).get(0);
-
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
             return -1;
         }
@@ -166,25 +166,27 @@ public class DaoInsertImpl implements Daoinsert {
     }
 
     @Override
-    public AuthorizationRequest authorization(Authorization authorization, String gameName) {
-        try{
-            String sql="select arena_info.authorization_gamer(?,?,?)";
-            return jdbcTemplate.queryForList(sql,new Object[]{authorization.getLogin(),authorization.getPassword(), gameName}, AuthorizationRequest.class).get(0);
-        }
-        catch (Exception e){
+    public AuthorizationRequest authorization(Authorization authorization) {
+        try {
+            String sql = "select * from arena_info.authorization_gamer(?,?,?)";
+            return jdbcTemplate.queryForObject(sql,
+                new Object[]{authorization.getLogin(), authorization.getPassword(),
+                    authorization.getGameName()}, (resultSet, rowNum) -> new AuthorizationRequest(
+                        resultSet.getInt("registrated_id"), resultSet.getString("info")));
+        } catch (Exception e) {
 
-            return new AuthorizationRequest(-1,"");
+            return new AuthorizationRequest(-1, "");
         }
     }
 
     @Override
     public int update(AuthorizationRequest authorizationRequest) {
-        try{
-            String sql="select arena_info.update_gamer(?,?)";
-            jdbcTemplate.queryForList(sql,new Object[]{authorizationRequest.getRegistrated_id(),authorizationRequest.getInfo()}, Integer.class);
+        try {
+            String sql = "select arena_info.update_gamer(?,?)";
+            jdbcTemplate.queryForList(sql, new Object[]{authorizationRequest.getRegistrated_id(),
+                authorizationRequest.getInfo()}, Integer.class);
             return 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
             return -1;
         }

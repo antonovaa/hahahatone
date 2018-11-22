@@ -21,9 +21,9 @@ public interface Daoinsert {
 
 
 
-    public int registration(Registration registration,String gameName);
+    public int registration(Registration registration);
 
-    public AuthorizationRequest authorization(Authorization authorization,String gameName);
+    public AuthorizationRequest authorization(Authorization authorization);
 
     public int update(AuthorizationRequest authorizationRequest);
 
