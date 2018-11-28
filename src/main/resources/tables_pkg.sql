@@ -19,6 +19,13 @@ create table if not exists arena_info.registrated
   login         text,
   password         text,
   email         text,
+  count_kill_monster integer default 0,
+  count_kill_boss_monster integer default 0,
+  count_kill_enemy_player integer default 0,
+  count_death integer default 0,
+  max_level integer default 0,
+  team_a integer default 0,
+  team_b integer default 0,
   info text,
   games_id INTEGER REFERENCES arena_info.games (games_id)
 );

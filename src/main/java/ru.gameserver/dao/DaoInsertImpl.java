@@ -1,5 +1,6 @@
 package ru.gameserver.dao;
 
+import com.google.gson.Gson;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.gameserver.model.Authorization;
@@ -10,6 +11,7 @@ import ru.gameserver.model.GameInfoModel;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import ru.gameserver.model.Information;
 import ru.gameserver.model.Registration;
 
 @Repository
@@ -23,6 +25,7 @@ public class DaoInsertImpl implements Daoinsert {
         this.jdbcTemplate = jdbcTemplate;
         this.dataSource = dataSource;
     }
+
 
     @Override
     public int saveGameInfo(List<GameInfoModel> v, String name, String macAddr) {
@@ -154,6 +157,9 @@ public class DaoInsertImpl implements Daoinsert {
 
         try {
             String sql = "select arena_info.registration_gamer(?,?,?,?)";
+
+            Information information=new Information(0,0,0,0,0,0,0);
+            String test=information.toString();
             return jdbcTemplate.queryForList(sql,
                 new Object[]{registration.getLogin(), registration.getPassword(),
                     registration.getEmail(), registration.getGameName()}, Integer.class).get(0);
@@ -172,19 +178,36 @@ public class DaoInsertImpl implements Daoinsert {
             return jdbcTemplate.queryForObject(sql,
                 new Object[]{authorization.getLogin(), authorization.getPassword(),
                     authorization.getGameName()}, (resultSet, rowNum) -> new AuthorizationRequest(
-                        resultSet.getInt("registrated_id"), resultSet.getString("info")));
+                        resultSet.getInt("registrated_id"),
+                        resultSet.getInt("count_kill_monster"),
+                        resultSet.getInt("count_kill_boss_monster"),
+                        resultSet.getInt("count_kill_enemy_player"),
+                        resultSet.getInt("count_death"),
+                        resultSet.getInt("max_level"),
+                        resultSet.getInt("team_a"),
+                        resultSet.getInt("team_b"),
+                        resultSet.getString("info")
+                ));
         } catch (Exception e) {
-
-            return new AuthorizationRequest(-1, "");
+            return new AuthorizationRequest(-1, 0,0,0,0,0,0,0,"none");
         }
     }
 
     @Override
     public int update(AuthorizationRequest authorizationRequest) {
         try {
-            String sql = "select arena_info.update_gamer(?,?)";
-            jdbcTemplate.queryForList(sql, new Object[]{authorizationRequest.getRegistrated_id(),
-                authorizationRequest.getInfo()}, Integer.class);
+            String sql = "select arena_info.update_gamer(?,?,?,?,?,?,?,?,?)";
+            jdbcTemplate.queryForList(sql,
+                authorizationRequest.getRegistrated_id(),
+                authorizationRequest.getInfo(),
+                authorizationRequest.getCount_kill_monster(),
+                authorizationRequest.getCount_kill_boss_monster(),
+                authorizationRequest.getCount_kill_enemy_player(),
+                authorizationRequest.getCount_death(),
+                authorizationRequest.getMax_level(),
+                authorizationRequest.getTeam_a(),
+                authorizationRequest.getTeam_b()
+            );
             return 0;
         } catch (Exception e) {
 

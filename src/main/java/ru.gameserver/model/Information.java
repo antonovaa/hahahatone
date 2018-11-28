@@ -1,9 +1,6 @@
 package ru.gameserver.model;
 
-public class AuthorizationRequest {
-
-    private int registrated_id;
-
+public class Information {
 
     private int count_kill_monster;
     private int count_kill_boss_monster;
@@ -15,21 +12,10 @@ public class AuthorizationRequest {
     private int team_a;
     private int team_b;
 
-    private String info;
 
-
-    public AuthorizationRequest(
-        int registrated_id,
-        int count_kill_monster,
-        int count_kill_boss_monster,
+    public Information(int count_kill_monster, int count_kill_boss_monster,
         int count_kill_enemy_player,
-        int count_death,
-        int max_level,
-        int team_a,
-        int team_b,
-        String info
-    ) {
-        this.registrated_id = registrated_id;
+        int count_death, int max_level, int team_a, int team_b) {
         this.count_kill_monster = count_kill_monster;
         this.count_kill_boss_monster = count_kill_boss_monster;
         this.count_kill_enemy_player = count_kill_enemy_player;
@@ -37,9 +23,7 @@ public class AuthorizationRequest {
         this.max_level = max_level;
         this.team_a = team_a;
         this.team_b = team_b;
-        this.info = info;
     }
-
 
     public int getCount_kill_monster() {
         return count_kill_monster;
@@ -96,21 +80,4 @@ public class AuthorizationRequest {
     public void setTeam_b(int team_b) {
         this.team_b = team_b;
     }
-
-    public int getRegistrated_id() {
-        return registrated_id;
-    }
-
-    public void setRegistrated_id(int registrated_id) {
-        this.registrated_id = registrated_id;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
 }

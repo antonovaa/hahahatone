@@ -1,3 +1,4 @@
+
 create or replace function arena_info.registration_gamer(p_login text, p_password text, p_email text, p_game text)
   returns integer
 as $func$
@@ -22,7 +23,8 @@ begin
 
   if l_r is null
     then
-      insert into arena_info.registrated (login, password, email, games_id) VALUES (p_login , p_password , p_email ,  l_game);
+      insert into arena_info.registrated (login, password, email,   games_id)
+       VALUES (p_login , p_password , p_email ,  l_game);
       return 0;--success registration
     else
       return -3;-- already registration same login
@@ -33,7 +35,14 @@ LANGUAGE 'plpgsql';
 
 create or replace function arena_info.authorization_gamer(p_login text, p_password text,p_game text)
   returns table(
-  registrated_id integer,
+  registrated_id int,
+  count_kill_monster int,
+  count_kill_boss_monster int,
+  count_kill_enemy_player int,
+  count_death int,
+  max_level int,
+  team_a int,
+  team_b int,
   info text
   )
 as $func$
@@ -41,6 +50,13 @@ begin
   return query
   select
   r.registrated_id,
+  r.count_kill_monster,
+  r.count_kill_boss_monster,
+  r.count_kill_enemy_player,
+  r.count_death,
+  r.max_level,
+  r.team_a,
+  r.team_b,
   r.info
   from arena_info.registrated r
   join arena_info.games g on r.games_id = g.games_id
@@ -50,11 +66,28 @@ $func$
 LANGUAGE 'plpgsql';
 
 
-create or replace function arena_info.update_gamer(p_registrated_id integer, p_info text)
+create or replace function arena_info.update_gamer(p_registrated_id integer,
+p_info text,
+p_count_kill_monster integer,
+p_count_kill_boss_monster integer,
+p_count_kill_enemy_player integer,
+p_count_death integer,
+p_max_level integer,
+p_team_a integer,
+p_team_b integer
+)
   returns void
 as $func$
 begin
-  update arena_info.registrated set info=p_info
+  update arena_info.registrated set
+  info=p_info,
+  count_kill_monster=p_count_kill_monster,
+count_kill_boss_monster=p_count_kill_boss_monster,
+count_kill_enemy_player=p_count_kill_enemy_player,
+count_death=p_count_death,
+max_level=p_max_level,
+team_a=p_team_a,
+team_b=p_team_b
   where registrated_id=p_registrated_id;
 end;
 $func$

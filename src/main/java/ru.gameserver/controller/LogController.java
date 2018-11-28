@@ -2,6 +2,7 @@ package ru.gameserver.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,22 +36,40 @@ public class LogController {
     @ResponseBody
     public int registration(@RequestBody String registration) {
 
-        return daoinsert.registration(new Gson().fromJson(registration, Registration.class));
-    }
+        try{
 
+            return daoinsert.registration(new Gson().fromJson(registration, Registration.class));
+        }
+        catch (Exception e){
+            return -100;
+        }
+    }
+//{"login":"T1","password":"T2","email":"T3","gameName":"Test2"}
 
     @RequestMapping("/authorization")
     @ResponseBody
     public AuthorizationRequest authorization(@RequestBody String authorization) {
+        try{
 
         return daoinsert.authorization(new Gson().fromJson(authorization, Authorization.class));
+
+    }
+        catch (Exception e){
+        return new AuthorizationRequest(-1, 0,0,0,0,0,0,0,"none");
+    }
     }
 
 
     @RequestMapping("/update")
     @ResponseBody
     public int update(@RequestBody String update) {
-        return  daoinsert.update(new Gson().fromJson(update, AuthorizationRequest.class));
+        try{
+
+            return  daoinsert.update(new Gson().fromJson(update, AuthorizationRequest.class));
+    }
+        catch (Exception e){
+            return -100;
+            }
     }
 
 
