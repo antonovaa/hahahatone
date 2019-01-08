@@ -22,6 +22,13 @@ public class WebShowController {
     }
 
 
+//    @RequestMapping("/")
+//    @ResponseBody
+//    public String index() {
+//        return "index.html";
+//    }
+
+
     @RequestMapping(value = "/showLogList")@ResponseBody
     public List<Map<String, Object>> showList( @RequestParam(value = "date_begin") String date_begin,
                                               @RequestParam(value = "date_end") String date_end,

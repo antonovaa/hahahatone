@@ -72,16 +72,9 @@ begin
          lrg.player_count,
          lrg.server_ip,
          lrg.info as place_game
-  from arena_info.init_contractor_game_mac_key icgmk
-         join arena_info.contractor_games cg on icgmk.contractor_games_id = cg.contractor_games_id
-         join arena_info.games gg on cg.games_id = gg.games_id
-         join arena_info.contractor gc on cg.contractor_id = gc.contractor_id
-         join arena_info.log_run_game lrg on lrg.mac_addr = icgmk.mac_address
+  from arena_info.log_run_game lrg
   where 1 = 1
-    and (cg.contractor_id = p_contractor_id or p_contractor_id = 0)
-    and (cg.games_id = p_game_id or p_game_id = 0)
-    and upper(lrg.game_name) = upper(gg.game_name)
-    and (upper(gg.game_name) = upper(p_name) or p_name isnull or p_name = '')
+    and (upper(lrg.game_name) = upper(p_name) or p_name isnull or p_name = '')
     and (lrg.game_start :: date between to_date(p_date_begin, 'YYYY-MM-DD') and to_date(p_date_end, 'YYYY-MM-DD')
            or p_date_begin = '' or p_date_end = '')
   order by lrg.game_start;
@@ -90,8 +83,7 @@ $func$
 LANGUAGE 'plpgsql';
 
 --------------------------------------------------------------
-create or replace function arena_info.get_crash_game(p_name          text, p_date_begin text, p_date_end text,
-                                                    p_contractor_id int, p_game_id int)
+create or replace function arena_info.get_crash_game(p_name          text, p_date_begin text, p_date_end text,   p_game_id int)
   returns table(
     game_name  varchar(30),
     game_date  text,
@@ -112,12 +104,8 @@ begin
                   g.log_sever,
                   g.mac_addr
   from arena_info.log_crash_game g
-         left join arena_info.contractor_games cg
-           on (cg.contractor_id = p_contractor_id or p_contractor_id isnull or p_contractor_id = 0) and
-              (cg.games_id = p_game_id or p_game_id isnull or p_game_id = 0)
-         left join arena_info.init_contractor_game_mac_key icgmk on cg.contractor_games_id = icgmk.contractor_games_id
   where (g.game_name = p_name or p_name isnull or p_name = '')
-    and (icgmk.mac_address = g.mac_addr or (p_contractor_id = 0 and p_game_id = 0))
+
     and (g.game_start :: date between to_date(p_date_begin, 'YYYY-MM-DD') and to_date(p_date_end, 'YYYY-MM-DD')
            or p_date_begin = '' or p_date_end = '');
 end;

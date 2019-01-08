@@ -19,6 +19,16 @@ create table if not exists arena_info.registrated
   login         text,
   password         text,
   email         text,
+  games_id INTEGER REFERENCES arena_info.games (games_id)
+);
+
+
+create table if not exists arena_info.characters
+(
+  characters_id serial primary key,
+  character_level int,
+  character_type int,
+  is_checked BOOLEAN default false ,
   count_kill_monster integer default 0,
   count_kill_boss_monster integer default 0,
   count_kill_enemy_player integer default 0,
@@ -27,7 +37,7 @@ create table if not exists arena_info.registrated
   team_a integer default 0,
   team_b integer default 0,
   info text,
-  games_id INTEGER REFERENCES arena_info.games (games_id)
+  registrated_id INTEGER REFERENCES arena_info.registrated (registrated_id)
 );
 
 --------------------------------------------------------------

@@ -55,7 +55,7 @@ public class LogController {
 
     }
         catch (Exception e){
-        return new AuthorizationRequest(-1, 0,0,0,0,0,0,0,"none");
+        return new AuthorizationRequest(-1, null);
     }
     }
 

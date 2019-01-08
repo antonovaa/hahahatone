@@ -28,8 +28,8 @@ public class WebShowInfoImpl implements WebShowInfo {
         }
         catch (Exception ignored){
         }
-        String sql = "Select * from arena_info.get_log_game(?,?,?,?,?)";
-        gameInfoModels=jdbcTemplate.queryForList(sql,gameName, date_begin,date_end,contractor_id,game_id);
+        String sql = "Select * from arena_info.get_log_game(?,?,?,?)";
+        gameInfoModels=jdbcTemplate.queryForList(sql,gameName, date_begin,date_end,game_id);
 
         return gameInfoModels;
     }
@@ -43,8 +43,8 @@ public class WebShowInfoImpl implements WebShowInfo {
         }
         catch (Exception ignored){
         }
-        String sql = "Select * from arena_info.get_crash_game(?,?,?,?,?)";
-        gameInfoModels=jdbcTemplate.queryForList(sql,gameName,date_begin,date_end,contractor_id,game_id);
+        String sql = "Select * from arena_info.get_crash_game(?,?,?,?)";
+        gameInfoModels=jdbcTemplate.queryForList(sql,gameName,date_begin,date_end,game_id);
         return gameInfoModels;
     }
 

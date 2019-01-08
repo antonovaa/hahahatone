@@ -2,9 +2,11 @@ package ru.gameserver.dao;
 
 import com.google.gson.Gson;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.gameserver.model.Authorization;
 import ru.gameserver.model.AuthorizationRequest;
+import ru.gameserver.model.CharacterGamer;
 import ru.gameserver.model.CrashInfoModel;
 import ru.gameserver.model.GameInfoModel;
 
@@ -158,8 +160,8 @@ public class DaoInsertImpl implements Daoinsert {
         try {
             String sql = "select arena_info.registration_gamer(?,?,?,?)";
 
-            Information information=new Information(0,0,0,0,0,0,0);
-            String test=information.toString();
+            Information information = new Information(0, 0, 0, 0, 0, 0, 0);
+            String test = information.toString();
             return jdbcTemplate.queryForList(sql,
                 new Object[]{registration.getLogin(), registration.getPassword(),
                     registration.getEmail(), registration.getGameName()}, Integer.class).get(0);
@@ -174,44 +176,93 @@ public class DaoInsertImpl implements Daoinsert {
     @Override
     public AuthorizationRequest authorization(Authorization authorization) {
         try {
-            String sql = "select * from arena_info.authorization_gamer(?,?,?)";
-            return jdbcTemplate.queryForObject(sql,
+
+            String sqlReg = "select arena_info.get_id_authorization_gamer(?,?,?)";
+            String sqlChar = "select * from arena_info.get_characters_gamer(?)";
+
+            List<Integer> id = jdbcTemplate.queryForList(sqlReg,
                 new Object[]{authorization.getLogin(), authorization.getPassword(),
-                    authorization.getGameName()}, (resultSet, rowNum) -> new AuthorizationRequest(
-                        resultSet.getInt("registrated_id"),
-                        resultSet.getInt("count_kill_monster"),
-                        resultSet.getInt("count_kill_boss_monster"),
-                        resultSet.getInt("count_kill_enemy_player"),
-                        resultSet.getInt("count_death"),
-                        resultSet.getInt("max_level"),
-                        resultSet.getInt("team_a"),
-                        resultSet.getInt("team_b"),
-                        resultSet.getString("info")
-                ));
+                    authorization.getGameName()}, Integer.class);
+            if (id.isEmpty()) {
+                return new AuthorizationRequest(-1, null);
+            } else {
+
+                int registrated_id = id.get(0);
+                if(registrated_id==-1){
+                    return new AuthorizationRequest(registrated_id, null);
+                }
+                List<CharacterGamer> characterGamers = jdbcTemplate
+                    .query(sqlChar, new Object[]{registrated_id},
+                        (rs, rowNum) -> new CharacterGamer(
+                            rs.getInt("characters_id"),
+                            rs.getInt("character_level"),
+                            rs.getInt("character_type"),
+                            rs.getInt("count_kill_monster"),
+                            rs.getInt("count_kill_boss_monster"),
+                            rs.getInt("count_kill_enemy_player"),
+                            rs.getInt("count_death"),
+                            rs.getInt("max_level"),
+                            rs.getInt("team_a"),
+                            rs.getInt("team_b"),
+                            rs.getString("info")
+                        ));
+                if(characterGamers.isEmpty()){
+                    return new AuthorizationRequest(registrated_id, null);
+                }
+                return new AuthorizationRequest(registrated_id, characterGamers);
+            }
         } catch (Exception e) {
-            return new AuthorizationRequest(-1, 0,0,0,0,0,0,0,"none");
+            return new AuthorizationRequest(-1, null);
         }
     }
 
     @Override
     public int update(AuthorizationRequest authorizationRequest) {
         try {
-            String sql = "select arena_info.update_gamer(?,?,?,?,?,?,?,?,?)";
-            jdbcTemplate.queryForList(sql,
-                authorizationRequest.getRegistrated_id(),
-                authorizationRequest.getInfo(),
-                authorizationRequest.getCount_kill_monster(),
-                authorizationRequest.getCount_kill_boss_monster(),
-                authorizationRequest.getCount_kill_enemy_player(),
-                authorizationRequest.getCount_death(),
-                authorizationRequest.getMax_level(),
-                authorizationRequest.getTeam_a(),
-                authorizationRequest.getTeam_b()
-            );
-            return 0;
-        } catch (Exception e) {
+            if (authorizationRequest.getRegistrated_id() == 0||authorizationRequest.getRegistrated_id()==-1) {
+                return -1;
+            }
+            List<CharacterGamer> characterGamers = authorizationRequest.getCharacterGamer();
 
-            return -1;
+            if(characterGamers.get(0).getCharacters_id()==-1){
+                String sql = "select arena_info.insert_character(?,?,?,?,?,?,?,?,?,?,?)";
+
+                int id=(int)jdbcTemplate.queryForList(sql,
+                    authorizationRequest.getRegistrated_id(),
+                    characterGamers.get(0).getCharacter_level(),
+                    characterGamers.get(0).getCharacter_type(),
+                    characterGamers.get(0).getCount_kill_monster(),
+                    characterGamers.get(0).getCount_kill_boss_monster(),
+                    characterGamers.get(0).getCount_kill_enemy_player(),
+                    characterGamers.get(0).getCount_death(),
+                    characterGamers.get(0).getMax_level(),
+                    characterGamers.get(0).getTeam_a(),
+                    characterGamers.get(0).getTeam_b(),
+                    characterGamers.get(0).getInfo()
+                ).get(0).get("insert_character");
+                return id;
+
+            }
+            else{
+                String sql = "select arena_info.update_character(?,?,?,?,?,?,?,?,?,?,?,?)";
+                jdbcTemplate.queryForList(sql,
+                    authorizationRequest.getRegistrated_id(),
+                    characterGamers.get(0).getCharacters_id(),
+                    characterGamers.get(0).getCharacter_level(),
+                    characterGamers.get(0).getCount_kill_monster(),
+                    characterGamers.get(0).getCount_kill_boss_monster(),
+                    characterGamers.get(0).getCount_kill_enemy_player(),
+                    characterGamers.get(0).getCount_death(),
+                    characterGamers.get(0).getMax_level(),
+                    characterGamers.get(0).getTeam_a(),
+                    characterGamers.get(0).getTeam_b(),
+                    characterGamers.get(0).getInfo(),
+                    authorizationRequest.isAdditionally()
+                    );
+            }
+                return characterGamers.get(0).getCharacters_id();
+            } catch (Exception e) {
+                return -2;
+            }
         }
     }
-}

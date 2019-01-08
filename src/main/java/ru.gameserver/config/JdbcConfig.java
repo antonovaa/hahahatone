@@ -28,28 +28,46 @@ public class JdbcConfig {
         return dataSource;
     }
 
+//
+//    @Configuration
+//    @EnableSwagger2
+//    public class SwaggerConfig extends WebMvcConfigurationSupport {
+//
+//        @Bean
+//        public Docket productApi() {
+//            return new Docket(DocumentationType.SWAGGER_2)
+//                .select()
+//                .apis(RequestHandlerSelectors.basePackage("ru.gameserver.controller"))
+//                .paths(regex("/*.*"))
+//                .build();
+//        }
+//        @Override
+//        protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+//            registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//            registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//            registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/");
+//                            registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/static/");
+//
+//        }
+//
+//    }
+//
+//    @Configuration
+//    @EnableSwagger2
+//    public static class SwaggerConfig extends WebMvcConfigurationSupport {
+//        @Override
+//        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//                registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/static/");
+//            registry.addResourceHandler("swagger-ui.html")
+//               .addResourceLocations("classpath:/resources/");
+//
+//            registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//            registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/");
+//        }
+//    }
 
-    @Configuration
-    @EnableSwagger2
-    public class SwaggerConfig extends WebMvcConfigurationSupport {
-
-        @Bean
-        public Docket productApi() {
-            return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("ru.gameserver.controller"))
-                .paths(regex("/*.*"))
-                .build();
-        }
-        @Override
-        protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-            registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-            registry.addResourceHandler("/**").addResourceLocations("classpath:/resources/");
-        }
-
-    }
 
 }
