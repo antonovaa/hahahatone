@@ -23,7 +23,7 @@ begin
   g.game_name
   from arena_info.registrated r
   join arena_info.games g on r.games_id = g.games_id
-  join arena_info.characters ac on r.registrated_id = ac.registrated_id
+  left join arena_info.characters ac on r.registrated_id = ac.registrated_id
   where r.games_id=p_games_id or p_games_id=0;
 end;
 $func$

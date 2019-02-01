@@ -24,7 +24,8 @@ public class JdbcConfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("Arena12345");
+        dataSource.setPassword("Narratex12345");
+        //dataSource.setPassword("Arena12345");
         return dataSource;
     }
 

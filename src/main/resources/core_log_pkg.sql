@@ -6,6 +6,8 @@ create or replace function arena_info.insert_array_info_macAddres(p_game_start  
   returns void
 as $func$
 begin
+
+SET datestyle = "ISO, DMY";
   insert into arena_info.log_run_game (game_name,
                                       info,
                                       game_start,
@@ -22,6 +24,8 @@ begin
          unnest(p_player_count),
          unnest(p_server_ip),
          p_server_mac_addres;
+
+         SET datestyle = default;
 end;
 $func$
 LANGUAGE plpgsql;
@@ -33,7 +37,10 @@ create or replace function arena_info.insert_array_crash_info_macAddres(p_game_s
                                                                        p_server_mac_addres text)
   returns void
 as $func$
+
 begin
+
+SET datestyle = "ISO, DMY";
   insert into arena_info.log_crash_game (game_start, player_ip, server_ip, log_sever, log_player, game_name, mac_addr)
   select unnest(p_game_start) :: timestamp,
          unnest(p_player_ip),
@@ -42,6 +49,7 @@ begin
          unnest(p_log_player),
          unnest(p_name),
          p_server_mac_addres;
+SET datestyle = default;
 end;
 $func$
 LANGUAGE plpgsql;
