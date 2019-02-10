@@ -219,7 +219,7 @@ public class DaoInsertImpl implements Daoinsert {
     @Override
     public int update(AuthorizationRequest authorizationRequest) {
         try {
-            if (authorizationRequest.getRegistrated_id() == 0||authorizationRequest.getRegistrated_id()==-1) {
+            if (authorizationRequest.getRegistrated_id() == 0||authorizationRequest.getRegistrated_id()==-1||authorizationRequest.getRegistrated_id()==-10) {
                 return -1;
             }
             List<CharacterGamer> characterGamers = authorizationRequest.getCharacterGamer();
@@ -244,11 +244,12 @@ public class DaoInsertImpl implements Daoinsert {
 
             }
             else{
-                String sql = "select arena_info.update_character(?,?,?,?,?,?,?,?,?,?,?,?)";
+                String sql = "select arena_info.update_character(?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 jdbcTemplate.queryForList(sql,
                     authorizationRequest.getRegistrated_id(),
                     characterGamers.get(0).getCharacters_id(),
                     characterGamers.get(0).getCharacter_level(),
+                    characterGamers.get(0).getCharacter_type(),
                     characterGamers.get(0).getCount_kill_monster(),
                     characterGamers.get(0).getCount_kill_boss_monster(),
                     characterGamers.get(0).getCount_kill_enemy_player(),
