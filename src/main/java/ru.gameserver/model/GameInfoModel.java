@@ -3,6 +3,8 @@ package ru.gameserver.model;
 import java.io.Serializable;
 
 public class GameInfoModel implements Serializable {
+
+
     private int Id;
 
     private String gameStart;
