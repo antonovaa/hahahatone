@@ -16,58 +16,58 @@ n=1;
 end if;
   return query
 
-select
-    s2.id,
-    s2.nam,
-    s2.descr
-    from
-    hackatone.hacka.scenario_tags2 s
-    join hackatone.hacka.scenario s2 on s.sce_id = s2.id
-    where s2.id=any (
-    select s2.id
-    from hackatone.hacka.scenario_tags2 s
-    join hackatone.hacka.scenario s2 on s.sce_id = s2.id
-    where s.tag_id = any (
-    select t.tag_id from
-    hackatone.hacka.tags2 t
-    where t.tag_val similar to(
-    select
-    '%'||string_agg(substring(t2.tag_val from 0 for length(t2.tag_val)), E'|')||'%'
-    from
-    hackatone.hacka.tags2 t2
-    where t2.tag_id = any(p_scen_tag_id)
-    )
-    )
-    GROUP BY s2.id
-    having count(s2.id)>n
-    order by  count(s2.id) desc
-    )
-
-    GROUP BY s2.id
-order by  count(s2.id) desc
-    ;
-
-
-
-
 -- select
---        s2.id,
---        s2.nam,
---        s2.descr
--- from
---      hackatone.hacka.scenario_tags2 s
---        join hackatone.hacka.scenario s2 on s.sce_id = s2.id
--- where s2.id=any (
+--     s2.id,
+--     s2.nam,
+--     s2.descr
+--     from
+--     hackatone.hacka.scenario_tags2 s
+--     join hackatone.hacka.scenario s2 on s.sce_id = s2.id
+--     where s2.id=any (
+--     select s2.id
+--     from hackatone.hacka.scenario_tags2 s
+--     join hackatone.hacka.scenario s2 on s.sce_id = s2.id
+--     where s.tag_id = any (
+--     select t.tag_id from
+--     hackatone.hacka.tags2 t
+--     where t.tag_val similar to(
+--     select
+--     '%'||string_agg(substring(t2.tag_val from 0 for length(t2.tag_val)), E'|')||'%'
+--     from
+--     hackatone.hacka.tags2 t2
+--     where t2.tag_id = any(p_scen_tag_id)
+--     )
+--     )
+--     GROUP BY s2.id
+--     having count(s2.id)>n
+--     order by  count(s2.id) desc
+--     )
 --
---                 select s2.id
---               from hackatone.hacka.scenario_tags2 s
---                      join hackatone.hacka.scenario s2 on s.sce_id = s2.id
---               where s.tag_id = any (p_scen_tag_id)
---               GROUP BY s2.id
--- having count(s2.id)>n
+--     GROUP BY s2.id
 -- order by  count(s2.id) desc
---                 )
--- GROUP BY s2.id;
+--     ;
+
+
+
+
+ select
+        s2.id,
+        s2.nam,
+        s2.descr
+ from
+      hackatone.hacka.scenario_tags2 s
+        join hackatone.hacka.scenario s2 on s.sce_id = s2.id
+ where s2.id=any (
+
+                 select s2.id
+               from hackatone.hacka.scenario_tags2 s
+                      join hackatone.hacka.scenario s2 on s.sce_id = s2.id
+               where s.tag_id = any (p_scen_tag_id)
+               GROUP BY s2.id
+ having count(s2.id)>n
+ order by  count(s2.id) desc
+                 )
+ GROUP BY s2.id;
 
 
 

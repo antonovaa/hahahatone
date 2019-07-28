@@ -21,15 +21,15 @@
 
       <thead>
       <tr>
-        <th scope="col">№</th>
+        <th scope="col">ID</th>
         <th scope="col">TagName</th>
         <th scope="col">Хештег</th>
-        <th scope="col">Checked</th>
+        <th scope="col"></th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="(value, index) in rowsCur ">
-        <td>{{index+1}}</td>
+        <td>{{value.id}}</td>
         <td>{{value.tags}}</td>
         <td>{{value.descr}}</td>
         <td>
@@ -55,7 +55,7 @@
           <th scope="col">ID</th>
           <th scope="col">TagName</th>
           <th scope="col">Описание</th>
-          <th scope="col">Checked</th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -119,7 +119,7 @@
     <br/>
 
     <p>
-      Результат сценария (уточнение)
+      Выбранный сценарий
     </p>
 
       <div class="row borda" >
@@ -140,7 +140,7 @@
             <td>{{value.descr}}</td>
             <td>
 
-              <div>
+              <div v-if="value.button!==''&&value.button!==' '&&value.button!==null">
                 <button style="width: 100px" class="btn btn-primary"
                         v-on:click="getSteps(value.id)">{{value.button}}
                 </button>
@@ -315,5 +315,8 @@
   .borda{
     height: 1100px;
     border: #0c5460  double ;
+  }
+  #inputs{
+    font-family: helvetica neue, helvetica, sans-serif;
   }
 </style>
