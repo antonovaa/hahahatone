@@ -1,1 +1,0 @@
-java -jar C:\Games\Backend\ArenaBackEnd\target\GameLoger-1.0-SNAPSHOT-spring-boot.jar
