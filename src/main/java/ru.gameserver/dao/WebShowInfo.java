@@ -7,11 +7,10 @@ public interface WebShowInfo {
 
 
 
-    public List<Map<String, Object>> getGamersGame(int gamesId);
-    public List<Map<String, Object>> getGames();
+    public List<Map<String, String>> getScen(Integer[] t);
+    public List<Map<String, Object>> getTags();
 
-    public List<Map<String, Object>> getGamesLog(String date_begin,String date_end,int contractor_id,int game_id);
-    public List<Map<String, Object>> getGamesCrash(String date_begin,String date_end,int contractor_id,int game_id);
+    public List<Map<String, Object>> getStepsInScen(int id);
 
 
 }

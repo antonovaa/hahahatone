@@ -34,8 +34,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
-                        .username("Arena")
-                        .password("SecurityArena12345")
+                        .username("Ivan")
+                        .password("12345")
                         .roles("ADMIN")
                         .build();
 

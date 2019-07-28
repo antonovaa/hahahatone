@@ -1,5 +1,13 @@
 package ru.gameserver.dao;
 
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,56 +19,65 @@ import java.util.Map;
 public class WebShowInfoImpl implements WebShowInfo {
 
     private final JdbcTemplate jdbcTemplate;
-
+    private final DataSource dataSource;
     @Autowired
-    public WebShowInfoImpl(JdbcTemplate jdbcTemplate) {
+    public WebShowInfoImpl(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
+        this.dataSource = dataSource;
+    }
+
+    @Override
+    public List<Map<String, Object>> getTags() {
+        try {
+            return jdbcTemplate.queryForList(
+                "select t.tag_id as id,t.tag_typ as tags,t.tag_val as descr from hackatone.hacka.tags2 t");
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
     @Override
-    public List<Map<String, Object>> getGamesLog(String date_begin,String date_end,int contractor_id,int game_id) {
+    public List<Map<String, String>> getScen(Integer[] t) {
 
-        List<Map<String, Object>> gameInfoModels;
-        String gameName="";
-        try {
-            gameName = jdbcTemplate.queryForList("select g.game_name from arena_info.games g where g.games_id=" + game_id, String.class).get(0);
-        }
-        catch (Exception ignored){
-        }
-        String sql = "Select * from arena_info.get_log_game(?,?,?,?)";
-        gameInfoModels=jdbcTemplate.queryForList(sql,gameName, date_begin,date_end,game_id);
+        String callSQL = "select * from hackatone.hacka.getScenByTagsId(?);";
+        if(t.length==0)return null;
 
-        return gameInfoModels;
-    }
+        try (Connection con = dataSource.getConnection();
+            PreparedStatement preparedStatement = con.prepareStatement(callSQL)) {
 
-    @Override
-    public List<Map<String, Object>> getGamesCrash(String date_begin,String date_end,int contractor_id,int game_id) {
-        List<Map<String, Object>> gameInfoModels;
-        String gameName="";
-        try {
-            gameName = jdbcTemplate.queryForList("select * from arena_info.games g where g.games_id=" + game_id, String.class).get(0);
-        }
-        catch (Exception ignored){
-        }
-        String sql = "Select * from arena_info.get_crash_game(?,?,?,?)";
-        gameInfoModels=jdbcTemplate.queryForList(sql,gameName,date_begin,date_end,game_id);
-        return gameInfoModels;
-    }
 
-    @Override
-    public List<Map<String, Object>> getGamersGame(int gamesId) {
-        try {
-            return jdbcTemplate.queryForList("select * from arena_info.get_gamers_game(" + gamesId + ")");
+            Array ar4 = con.createArrayOf("int4", t);
+
+            preparedStatement.setArray(1, ar4);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            List<String> columns = new ArrayList<String>(rsmd.getColumnCount());
+            for(int i = 1; i <= rsmd.getColumnCount(); i++){
+                columns.add(rsmd.getColumnName(i));
+            }
+            List<Map<String,String>> data = new ArrayList<Map<String,String>>();
+            while(rs.next()){
+                Map<String,String> row = new HashMap<String, String>(columns.size());
+                for(String col : columns) {
+                    row.put(col, rs.getString(col));
+                }
+                data.add(row);
+            }
+            return data;
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public List<Map<String, Object>> getGames() {
+    public List<Map<String, Object>> getStepsInScen(int id) {
         try {
-            return jdbcTemplate.queryForList("select g.games_id,g.game_name from arena_info.games g");
+
+            return jdbcTemplate.queryForList(
+                "select s.id,s.no,s.button,s.descr,s.typ from hackatone.hacka.scenario_step s where s.id="
+                    + id+" order BY s.no");
         } catch (Exception e) {
             return null;
         }

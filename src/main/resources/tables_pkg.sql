@@ -1,112 +1,91 @@
-CREATE SCHEMA "arena_info";
-
---------------------------------------------------------------
-
-create table if not exists arena_info.games
+CREATE TABLE hacka.tags2
 (
-  games_id  serial primary key,
-  game_name text
-);
+  tag_id integer NOT NULL,
+  tag_typ text COLLATE pg_catalog."default" NOT NULL,
+  tag_val text COLLATE pg_catalog."default" NOT NULL,
+  CONSTRAINT tags2_pkey PRIMARY KEY (tag_id)
+)
+WITH (
+OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE hacka.tags2
+  OWNER to postgres;
+COMMENT ON TABLE hacka.tags2
+IS 'Справочник тэгов (комбинации тип-значение)';
 
 
---------------------------------------------------------------
-
-
-create table if not exists arena_info.registrated
+CREATE TABLE hacka.scenario
 (
-  registrated_id serial primary key,
-  registrate_date        timestamp default now(),
-  login         text,
-  password         text,
-  email         text,
-  games_id INTEGER REFERENCES arena_info.games (games_id)
-);
+  id integer NOT NULL,
+  nam text COLLATE pg_catalog."default" NOT NULL,
+  descr text COLLATE pg_catalog."default" NOT NULL,
+  CONSTRAINT scenario_pkey PRIMARY KEY (id),
+  CONSTRAINT nam1 UNIQUE (nam)
+
+)
+WITH (
+OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE hacka.scenario
+  OWNER to postgres;
+COMMENT ON TABLE hacka.scenario
+IS 'Заголовок сценария для оператора';
 
 
-create table if not exists arena_info.characters
+CREATE TABLE hacka.scenario_tags2
 (
-  characters_id serial primary key,
-  character_level int,
-  character_type int,
-  is_checked BOOLEAN default false ,
-  count_kill_monster integer default 0,
-  count_kill_boss_monster integer default 0,
-  count_kill_enemy_player integer default 0,
-  count_death integer default 0,
-  max_level integer default 0,
-  team_a integer default 0,
-  team_b integer default 0,
-  info text,
-  registrated_id INTEGER REFERENCES arena_info.registrated (registrated_id)
-);
+  sce_id integer NOT NULL,
+  tag_id integer NOT NULL,
+  CONSTRAINT scenario_tags2_pkey PRIMARY KEY (sce_id, tag_id),
+  CONSTRAINT tag22_sce_id FOREIGN KEY (sce_id)
+  REFERENCES hacka.scenario (id) MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION,
+  CONSTRAINT tag22_tag_id FOREIGN KEY (tag_id)
+  REFERENCES hacka.tags2 (tag_id) MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+)
+WITH (
+OIDS = FALSE
+)
+TABLESPACE pg_default;
 
---------------------------------------------------------------
+ALTER TABLE hacka.scenario_tags2
+  OWNER to postgres;
+COMMENT ON TABLE hacka.scenario_tags2
+IS 'Присвоение тэгов сценарию';
 
-create table if not exists arena_info.log_crash_game
+-- ----------------------------------------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------------------------------------
+
+
+
+-- ----------------------------------------------------------------------------------------------------------
+
+CREATE TABLE hacka.scenario_step
 (
-  log_crash_game_id serial not null,
-  game_start        timestamp,
-  player_ip         text,
-  server_ip         text,
-  log_sever         text,
-  log_player        text,
-  game_name         varchar(30),
-  mac_addr          text
-);
+  id integer NOT NULL,
+  no integer NOT NULL,
+  typ text COLLATE pg_catalog."default" NOT NULL,
+  descr text COLLATE pg_catalog."default" NOT NULL,
+  button text COLLATE pg_catalog."default",
+  CONSTRAINT scenario_step_pkey PRIMARY KEY (id, no),
+  CONSTRAINT step_sce_id FOREIGN KEY (id)
+  REFERENCES hacka.scenario (id) MATCH SIMPLE
+  ON UPDATE NO ACTION
+  ON DELETE NO ACTION
+)
+WITH (
+OIDS = FALSE
+)
+TABLESPACE pg_default;
 
-comment on table arena_info.log_crash_game
-is 'Crash table';
-
-comment on column arena_info.log_crash_game.game_start
-is 'время начала игры';
-
-comment on column arena_info.log_crash_game.player_ip
-is 'registrated_id Player';
-
-comment on column arena_info.log_crash_game.server_ip
-is 'registrated_id Server';
-
-comment on column arena_info.log_crash_game.log_sever
-is 'log server';
-
-comment on column arena_info.log_crash_game.log_player
-is 'log client';
-
---------------------------------------------------------------
-
-create table if not exists arena_info.log_run_game
-(
-  log_run_game_id serial not null
-    constraint log_run_game_pkey
-    primary key,
-  game_name       text,
-  game_start      timestamp,
-  game_end        text,
-  play_start      timestamp,
-  player_count    integer,
-  server_ip       text,
-  mac_addr        text,
-  info            text
-);
-
-comment on column arena_info.log_run_game.game_name
-is 'имя сервера';
-
-comment on column arena_info.log_run_game.game_start
-is 'время старта игры';
-
-comment on column arena_info.log_run_game.game_end
-is 'конец игры';
-
-comment on column arena_info.log_run_game.play_start
-is 'время начала игры';
-
-comment on column arena_info.log_run_game.info
-is 'любая информация в игре';
-
-comment on column arena_info.log_run_game.player_count
-is 'количество игроков';
-
-comment on column arena_info.log_run_game.server_ip
-is 'registrated_id сервера с игрой';
---------------------------------------------------------------
+ALTER TABLE hacka.scenario_step
+  OWNER to postgres;
+COMMENT ON TABLE hacka.scenario_step
+IS 'Шаги сценария';

@@ -14,6 +14,7 @@ import java.util.Map;
 public class WebShowController {
 
 
+
     private final WebShowInfoImpl webShowInfo;
 
     @Autowired
@@ -21,60 +22,30 @@ public class WebShowController {
         this.webShowInfo = webShowInfo;
     }
 
-
-//    @RequestMapping("/")
-//    @ResponseBody
-//    public String index() {
-//        return "index.html";
-//    }
-
-
-    @RequestMapping(value = "/showLogList")@ResponseBody
-    public List<Map<String, Object>> showList( @RequestParam(value = "date_begin") String date_begin,
-                                              @RequestParam(value = "date_end") String date_end,
-                                              @RequestParam(value = "contractor_id") int contractor_id,
-                                              @RequestParam(value = "game_id") int game_id
-
-    )
-    {
+        @RequestMapping(value = "/getTags")    @ResponseBody
+    public List<Map<String, Object>> getTags() {
         try {
-            return webShowInfo.getGamesLog(date_begin, date_end,contractor_id,game_id);
+            return webShowInfo.getTags();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    @RequestMapping(value = "/getScen")    @ResponseBody
+    public List<Map<String, String>> getScen(@RequestParam(value = "t") Integer[] t) {
+        try {
+            return webShowInfo.getScen(t);
         } catch (Exception e) {
             return null;
         }
     }
 
-    @RequestMapping(value = "/showCrashList")    @ResponseBody
-    public List<Map<String, Object>> showCrashList(@RequestParam(value = "date_begin") String date_begin ,
-                                                   @RequestParam(value = "date_end") String date_end,
-                                                   @RequestParam(value = "contractor_id") int contractor_id,
-                                                   @RequestParam(value = "game_id") int game_id
-
-    ) {
-
+    @RequestMapping(value = "/getStepsInScen")    @ResponseBody
+    public List<Map<String, Object>> getStepsInScen(@RequestParam(value = "id") int id) {
         try {
-            return webShowInfo.getGamesCrash( date_begin, date_end,contractor_id,game_id);
+            return webShowInfo.getStepsInScen(id);
         } catch (Exception e) {
             return null;
         }
     }
 
-
-    @RequestMapping(value = "/getGames")    @ResponseBody
-    public List<Map<String, Object>> getGames() {
-        try {
-            return webShowInfo.getGames();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/getGamersGame")    @ResponseBody
-    public List<Map<String, Object>> getGamersGame(@RequestParam(value = "gamesId") int gamesId) {
-        try {
-            return webShowInfo.getGamersGame(gamesId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }

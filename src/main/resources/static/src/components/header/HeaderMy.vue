@@ -5,21 +5,15 @@
       <div class="container-fluid">
         <div>
           <form class="form-inline">
-            <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(1)" type="button">
-              Games
-            </button>
-            <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(2)" type="button">
-              Gamers
-            </button>
-            <button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(3)" type="button">
-              Game Log
-            </button>
+            <!--<button class="btn btn-sm align-middle btn-info" v-on:click="openMainForm(1)" type="button">-->
+              <!--Важная информация-->
+            <!--</button>-->
           </form>
         </div>
         <div>
           <form class="form-inline">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <!--<input class="form-control mr-sm-2" type="text" placeholder="Search">-->
+            <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
           </form>
         </div>
       </div>
@@ -65,8 +59,9 @@
   }
   #header {
     height: 100px;
-    background-image: url("https://c.wallhere.com/photos/f3/02/4020x1675_px_apocalyptic_zombies-1201928.jpg!d");
+    /*background-image: url("http://trubaplastik.ru/storage/app/media/truby/kanalizatsii.jpg!d");*/
+    background-image:  url("https://cstrainingsystems.com/wp-content/uploads/2016/06/lemur-syas-stop.jpg") ;
+    background-size: 100%;
   }
 
-
-</style>
+  </style>
